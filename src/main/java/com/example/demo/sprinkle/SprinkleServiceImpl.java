@@ -39,4 +39,10 @@ public class SprinkleServiceImpl implements SprinkleService {
 
         return sprinkledMoney.receive(userId);
     }
+
+    @Override
+    public SprinkledMoney check(Long userId, String token) {
+        return sprinkledMoneyRepository.findByCreatorIdAndToken(userId, token)
+                .orElseThrow(SprinkledMoneyNotFoundException::new);
+    }
 }

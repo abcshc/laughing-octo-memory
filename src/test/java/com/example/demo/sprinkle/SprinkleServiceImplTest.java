@@ -79,4 +79,12 @@ class SprinkleServiceImplTest {
 
         assertThrows(SprinkledMoneyNotFoundException.class, () -> sprinkleService.receive(1234L, "MOCK-ROOM-ID", "ABC"));
     }
+
+    @Test
+    void test_check_throw_notFoundException() {
+        when(sprinkledMoneyRepository.findByCreatorIdAndToken(1234L, "ABC"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(SprinkledMoneyNotFoundException.class, () -> sprinkleService.check(1234L,"ABC"));
+    }
 }

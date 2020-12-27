@@ -87,4 +87,8 @@ public class SprinkledMoney {
     public List<DividedMoney> getDividedMoney() {
         return dividedMoney;
     }
+
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
 }

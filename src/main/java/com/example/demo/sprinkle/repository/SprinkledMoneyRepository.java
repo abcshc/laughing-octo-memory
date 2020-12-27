@@ -9,4 +9,6 @@ public interface SprinkledMoneyRepository extends JpaRepository<SprinkledMoney, 
     List<SprinkledMoney> findAllByRoomId(String roomId);
 
     Optional<SprinkledMoney> findByRoomIdAndToken(String roomId, String token);
+
+    Optional<SprinkledMoney> findByCreatorIdAndToken(Long creatorId, String token);
 }
