@@ -30,7 +30,7 @@ public class TokenGeneratorImpl implements TokenGenerator {
     @Override
     public String generate(Set<String> existing) {
         if (existing.size() >= max) {
-            throw new SprinkledMoneyTokenCountOutOfBoundsException();
+            throw new SprinkledMoneyTokenCountOutOfBoundsException("토큰을 생성할 수 없습니다");
         }
         int number = random.nextInt(max);
         String token = convert(number);

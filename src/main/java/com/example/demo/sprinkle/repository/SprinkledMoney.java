@@ -34,7 +34,7 @@ public class SprinkledMoney {
 
     private List<DividedMoney> divideAmount(int amount, int count) {
         if (amount < count) {
-            throw new SprinkledMoneyMinAmountPerCountException();
+            throw new SprinkledMoneyMinAmountPerCountException("인원수 보다 작은 금액을 뿌릴 수 없습니다.");
         }
 
         Random random = new Random();
@@ -53,22 +53,22 @@ public class SprinkledMoney {
 
     public int receive(Long userId) {
         if (creatorId.equals(userId)) {
-            throw new SprinkledMoneyCreatorReceiverSameException();
+            throw new SprinkledMoneyCreatorReceiverSameException("뿌린 사용자는 주울 수 없습니다.");
         }
 
         if (createdTime.plusMinutes(10).isBefore(LocalDateTime.now())) {
-            throw new SprinkledMoneyExpiredException();
+            throw new SprinkledMoneyExpiredException("마감된 뿌리기입니다.");
         }
 
         return dividedMoney.stream()
                 .filter(it -> {
                     if (userId.equals(it.getReceiverId())) {
-                        throw new SprinkledMoneyDuplicateReceiveException();
+                        throw new SprinkledMoneyDuplicateReceiveException("이미 주운 뿌리기입니다.");
                     }
                     return !it.isReceived();
                 })
                 .findFirst()
-                .orElseThrow(SprinkledMoneyExpiredException::new)
+                .orElseThrow(() -> new SprinkledMoneyExpiredException("마감된 뿌리기입니다."))
                 .receive(userId);
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.web;
 
 import com.example.demo.sprinkle.SprinkleService;
+import com.example.demo.sprinkle.exception.SprinkledMoneyTokenCountOutOfBoundsException;
 import com.example.demo.sprinkle.repository.SprinkledMoney;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -94,6 +95,5 @@ class SprinkleControllerTest {
                 .andExpect(jsonPath("$.received[1].amount").exists())
                 .andExpect(jsonPath("$.received[2].receiverId").value(345))
                 .andExpect(jsonPath("$.received[2].amount").exists());
-        ;
     }
 }

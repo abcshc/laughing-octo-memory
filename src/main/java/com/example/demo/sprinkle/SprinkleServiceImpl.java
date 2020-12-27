@@ -35,7 +35,7 @@ public class SprinkleServiceImpl implements SprinkleService {
     @Transactional
     public int receive(Long userId, String roomId, String token) {
         SprinkledMoney sprinkledMoney = sprinkledMoneyRepository.findByRoomIdAndToken(roomId, token)
-                .orElseThrow(SprinkledMoneyNotFoundException::new);
+                .orElseThrow(() -> new SprinkledMoneyNotFoundException("해당 정보를 찾을 수 없습니다."));
 
         return sprinkledMoney.receive(userId);
     }
@@ -43,6 +43,6 @@ public class SprinkleServiceImpl implements SprinkleService {
     @Override
     public SprinkledMoney check(Long userId, String token) {
         return sprinkledMoneyRepository.findByCreatorIdAndTokenAndCreatedTimeGreaterThanEqual(userId, token, LocalDateTime.now().minusDays(7))
-                .orElseThrow(SprinkledMoneyNotFoundException::new);
+                .orElseThrow(() -> new SprinkledMoneyNotFoundException("해당 정보를 찾을 수 없습니다."));
     }
 }
