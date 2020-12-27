@@ -42,7 +42,7 @@ public class SprinkleServiceImpl implements SprinkleService {
 
     @Override
     public SprinkledMoney check(Long userId, String token) {
-        return sprinkledMoneyRepository.findByCreatorIdAndToken(userId, token)
+        return sprinkledMoneyRepository.findByCreatorIdAndTokenAndCreatedTimeGreaterThanEqual(userId, token, LocalDateTime.now().minusDays(7))
                 .orElseThrow(SprinkledMoneyNotFoundException::new);
     }
 }

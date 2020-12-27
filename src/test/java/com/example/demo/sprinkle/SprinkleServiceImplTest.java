@@ -82,7 +82,7 @@ class SprinkleServiceImplTest {
 
     @Test
     void test_check_throw_notFoundException() {
-        when(sprinkledMoneyRepository.findByCreatorIdAndToken(1234L, "ABC"))
+        when(sprinkledMoneyRepository.findByCreatorIdAndTokenAndCreatedTimeGreaterThanEqual(1234L, "ABC", LocalDateTime.now().minusDays(7)))
                 .thenReturn(Optional.empty());
 
         assertThrows(SprinkledMoneyNotFoundException.class, () -> sprinkleService.check(1234L,"ABC"));
