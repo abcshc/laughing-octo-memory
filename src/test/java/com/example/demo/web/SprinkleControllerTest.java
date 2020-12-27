@@ -19,7 +19,7 @@ class SprinkleControllerTest {
 
     @Test
     void test_sprinkleMoney_success() throws Exception {
-        when(sprinkleService.sprinkleMoney(12345L, "MOCK-ROOM-ID", 3000, 5))
+        when(sprinkleService.sprinkle(12345L, "MOCK-ROOM-ID", 3000, 5))
                 .thenReturn("Thx");
 
         mockMvc.perform(post("/sprinkle")
@@ -33,5 +33,22 @@ class SprinkleControllerTest {
                         "}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("Thx"));
+    }
+
+    @Test
+    void test_receive_success() throws Exception {
+        when(sprinkleService.receive(12345L, "MOCK-ROOM-ID", "Thx"))
+                .thenReturn(1234);
+
+        mockMvc.perform(post("/receive")
+                .header("X-USER-ID", 12345)
+                .header("X-ROOM-ID", "MOCK-ROOM-ID")
+                .contentType(MediaType.APPLICATION_JSON)
+                //language=json
+                .content("{\n" +
+                        "  \"token\": \"Thx\"\n" +
+                        "}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.received").value(1234));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.demo.sprinkle;
 
-import com.example.demo.sprinkle.exception.TokenCountOutOfBoundsException;
+import com.example.demo.sprinkle.exception.SprinkledMoneyTokenCountOutOfBoundsException;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -30,7 +30,7 @@ public class TokenGeneratorImpl implements TokenGenerator {
     @Override
     public String generate(Set<String> existing) {
         if (existing.size() >= max) {
-            throw new TokenCountOutOfBoundsException();
+            throw new SprinkledMoneyTokenCountOutOfBoundsException();
         }
         int number = random.nextInt(max);
         String token = convert(number);

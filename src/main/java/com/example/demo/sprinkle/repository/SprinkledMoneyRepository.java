@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface SprinkledMoneyRepository extends JpaRepository<SprinkledMoney, String> {
     List<SprinkledMoney> findAllByRoomId(String roomId);
+
+    Optional<SprinkledMoney> findByRoomIdAndToken(String roomId, String token);
 }

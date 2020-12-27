@@ -1,5 +1,8 @@
 package com.example.demo.sprinkle.repository;
 
+import com.example.demo.sprinkle.exception.SprinkledMoneyCreatorReceiverSameException;
+import com.example.demo.sprinkle.exception.SprinkledMoneyDuplicateReceiveException;
+import com.example.demo.sprinkle.exception.SprinkledMoneyExpiredException;
 import com.example.demo.sprinkle.exception.SprinkledMoneyMinAmountPerCountException;
 
 import javax.persistence.*;
@@ -21,12 +24,12 @@ public class SprinkledMoney {
     public SprinkledMoney() {
     }
 
-    public SprinkledMoney(String token, String roomId, Long creatorId, int amount, int count) {
+    public SprinkledMoney(String token, String roomId, Long creatorId, int amount, int count, LocalDateTime createdTime) {
         this.token = token;
         this.roomId = roomId;
         this.creatorId = creatorId;
         this.dividedMoney = divideAmount(amount, count);
-        this.createdTime = LocalDateTime.now();
+        this.createdTime = createdTime;
     }
 
     private List<DividedMoney> divideAmount(int amount, int count) {
@@ -46,6 +49,27 @@ public class SprinkledMoney {
         divided.add(new DividedMoney(this, remainingMoney));
 
         return divided;
+    }
+
+    public int receive(Long userId) {
+        if (creatorId.equals(userId)) {
+            throw new SprinkledMoneyCreatorReceiverSameException();
+        }
+
+        if (createdTime.plusMinutes(10).isBefore(LocalDateTime.now())) {
+            throw new SprinkledMoneyExpiredException();
+        }
+
+        return dividedMoney.stream()
+                .filter(it -> {
+                    if (userId.equals(it.getReceiverId())) {
+                        throw new SprinkledMoneyDuplicateReceiveException();
+                    }
+                    return !it.isReceived();
+                })
+                .findFirst()
+                .orElseThrow(SprinkledMoneyExpiredException::new)
+                .receive(userId);
     }
 
     public String getToken() {

@@ -1,6 +1,6 @@
 package com.example.demo.sprinkle;
 
-import com.example.demo.sprinkle.exception.TokenCountOutOfBoundsException;
+import com.example.demo.sprinkle.exception.SprinkledMoneyTokenCountOutOfBoundsException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,6 +66,6 @@ class TokenGeneratorImplTest {
         tokenGenerator = new TokenGeneratorImpl("ab", new Random());
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThrows(TokenCountOutOfBoundsException.class, () -> tokenGenerator.generate(Set.of("aaa", "aab", "aba", "abb", "baa", "bab", "bba", "bbb")));
+        assertThrows(SprinkledMoneyTokenCountOutOfBoundsException.class, () -> tokenGenerator.generate(Set.of("aaa", "aab", "aba", "abb", "baa", "bab", "bba", "bbb")));
     }
 }

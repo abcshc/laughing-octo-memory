@@ -27,4 +27,19 @@ public class DividedMoney {
     public int getAmount() {
         return amount;
     }
+
+    public boolean isReceived() {
+        return received;
+    }
+
+    @Nullable
+    public Long getReceiverId() {
+        return receiverId;
+    }
+
+    public int receive(Long receiverId) {
+        this.received = true;
+        this.receiverId = receiverId;
+        return amount;
+    }
 }
